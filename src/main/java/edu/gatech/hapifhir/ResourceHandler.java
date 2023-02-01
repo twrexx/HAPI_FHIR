@@ -34,7 +34,10 @@ public class ResourceHandler {
     public Observation addObservationCode(Observation observation, String system, String code, String display){
         // Create a CodeableConcept and add it to an existing Observation resource.
         // START STUDENT CODE HERE
-
+        Coding cd = new Coding();
+        cd.setSystem(system).setCode(code).setDisplay(display);
+        CodeableConcept cc = new CodeableConcept(cd);
+        observation.addCategory(cc);
         // END STUDENT CODE HERE
         return observation;
     }
@@ -46,7 +49,11 @@ public class ResourceHandler {
         // names. The name provided should be the only given name (a single item List).
 
         // START STUDENT CODE HERE
-
+        HumanName newGiven = new HumanName();
+        LinkedList<HumanName> list = new LinkedList<HumanName>();
+        newGiven.addGiven(givenName);
+        list.add(newGiven);
+        patient.setName(list);
         // END STUDENT CODE HERE
         return patient;
     }
@@ -65,6 +72,29 @@ public class ResourceHandler {
         // http://hl7.org/fhir/us/core/StructureDefinition-us-core-ethnicity.html
         //
         // START STUDENT CODE HERE
+        usCorePatient.setId(id);
+        usCorePatient.addIdentifier(identifier);
+        usCorePatient.addName().setFamily(name.getFamily()).addGiven(String.valueOf(name.getGiven()));
+
+        
+        Extension parent = new Extension("http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity");
+        usCorePatient.addExtension(parent);
+        
+        Extension ombExt = new Extension();
+        ombExt.setUrl("ombCategory");
+        ombExt.setValue(ethnicityOmbCoding);
+        parent.addExtension(ombExt);
+
+        Extension detailedExt = new Extension();
+        detailedExt.setUrl("detailed");
+        detailedExt.setValue(ethnicityDetailedCoding);
+        parent.addExtension(detailedExt);
+
+        Extension ethText = new Extension();
+        ethText.setUrl("text");
+        ethText.setValue(new StringType(ethnicityText));
+        parent.addExtension(ethText);
+
 
         // END STUDENT CODE HERE
         return usCorePatient;
