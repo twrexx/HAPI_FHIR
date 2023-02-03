@@ -8,6 +8,8 @@ import org.hl7.fhir.r4.model.HumanName;
 import org.hl7.fhir.r4.model.Identifier;
 import org.hl7.fhir.r4.model.Patient;
 
+import org.hl7.fhir.r4.model.Meta;
+
 import org.hl7.fhir.r4.model.Observation;
 import org.hl7.fhir.r4.model.StringType;
 
@@ -59,9 +61,9 @@ public class ResourceHandler {
             if(patient.getName().get(i).getUse() == HumanName.NameUse.OFFICIAL) {
                 name.setFamily(patient.getName().get(i).getFamily());
                 name.addGiven(givenName);
-            } else {
+            } else if(patient.getName().get(i).getUse() == HumanName.NameUse.USUAL){
                 name.addGiven(String.valueOf(patient.getName().get(i).getGiven().get(0)));
-            }
+            } 
             nameList.add(name);
         }
         patient.setName(nameList);
@@ -87,7 +89,10 @@ public class ResourceHandler {
         usCorePatient.setId(id);
         usCorePatient.addIdentifier(identifier);
         usCorePatient.addName().setFamily(name.getFamily()).addGiven(String.valueOf(name.getGiven()));
-
+        
+        Meta meta = new Meta();
+        meta.addProfile("http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient");
+        usCorePatient.setMeta(meta);
         
         Extension parent = new Extension("http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity");
         usCorePatient.addExtension(parent);

@@ -12,7 +12,7 @@ public class BundleHandler {
     public String navigateBundle(Bundle bundle, String link) {
 
         // START STUDENT CODE HERE
-
+        System.out.println(bundle.getEntry().get(0).getFullUrl());
         // END STUDENT CODE HERE
 
         return ""; // Returning empty string so starter code compiles.
