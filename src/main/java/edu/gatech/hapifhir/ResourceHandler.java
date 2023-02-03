@@ -36,8 +36,9 @@ public class ResourceHandler {
         // START STUDENT CODE HERE
         Coding cd = new Coding();
         cd.setSystem(system).setCode(code).setDisplay(display);
-        CodeableConcept cc = new CodeableConcept(cd);
-        observation.addCategory(cc);
+
+        // observation.addCategory(cc);
+        observation.setCode(new CodeableConcept().addCoding(cd));
         // END STUDENT CODE HERE
         return observation;
     }
@@ -49,11 +50,22 @@ public class ResourceHandler {
         // names. The name provided should be the only given name (a single item List).
 
         // START STUDENT CODE HERE
-        HumanName newGiven = new HumanName();
-        LinkedList<HumanName> list = new LinkedList<HumanName>();
-        newGiven.addGiven(givenName);
-        list.add(newGiven);
-        patient.setName(list);
+        ArrayList<HumanName> nameList = new ArrayList<HumanName>();    
+        
+        for(int i = 0; i < patient.getName().size(); i++){
+       
+            HumanName name = new HumanName();
+            name.setUse(patient.getName().get(i).getUse());
+            if(patient.getName().get(i).getUse() == HumanName.NameUse.OFFICIAL) {
+                name.setFamily(patient.getName().get(i).getFamily());
+                name.addGiven(givenName);
+            } else {
+                name.addGiven(String.valueOf(patient.getName().get(i).getGiven().get(0)));
+            }
+            nameList.add(name);
+        }
+        patient.setName(nameList);
+
         // END STUDENT CODE HERE
         return patient;
     }

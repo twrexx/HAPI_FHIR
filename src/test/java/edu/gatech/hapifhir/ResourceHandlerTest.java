@@ -50,7 +50,8 @@ public class ResourceHandlerTest extends TestCase {
     public void testSetObservationCode() throws Exception {
         if (ctx == null) ctx = FhirContext.forR4();
         if (parser == null) parser = ctx.newJsonParser();
-
+        parser.setPrettyPrint(true);
+        
         String observationJsonFile = "src/resources/observation.json";
         String observationJson = "";
         try {
@@ -63,12 +64,15 @@ public class ResourceHandlerTest extends TestCase {
         ResourceHandler studentResourceHandler = new ResourceHandler();
 
         // Build the rest of your test here.
+        studentResourceHandler.addObservationCode(correctObservation, "http://loinc.org", "123456-1", "Cholesterol in Blood");
+        System.out.println(parser.encodeResourceToString(correctObservation));
 
     }
 
     public void test_updateOfficialGivenName() throws Exception{
         if (ctx == null) ctx = FhirContext.forR4();
         if (parser == null) parser = ctx.newJsonParser();
+        parser.setPrettyPrint(true);
 
         String patientJsonFile = "src/resources/patient.json";
         String patientJson = "";
@@ -81,6 +85,8 @@ public class ResourceHandlerTest extends TestCase {
         ResourceHandler studentResourceHandler = new ResourceHandler();
 
         // Build the rest of your test here.
+        studentResourceHandler.updateOfficialGivenName(testPatient, "Adam");
+        // System.out.println(parser.encodeResourceToString(testPatient));
 
     }
 
