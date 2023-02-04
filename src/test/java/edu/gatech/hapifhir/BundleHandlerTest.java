@@ -31,16 +31,25 @@ public class BundleHandlerTest extends TestCase {
                 .execute();
 
         BundleHandler bundleHandler = new BundleHandler(); // Instantiate your bundle handler.
-        String nextUrl = bundleHandler.navigateBundle(results, Bundle.LINK_NEXT); // Call your navigateBundle method.
+        String nextUrl = bundleHandler.navigateBundle(results, Bundle.LINK_SELF); // Call your navigateBundle method.
 
         // You will have to build out any additional parts of this test needed here.
-
+        // System.out.println(nextUrl);
     }
 
     public void testGetListOfDeceasedPatients() {
         BundleHandler bundleHandler = new BundleHandler();
-
         // Build your tests here.
+        if (ctx == null) ctx = FhirContext.forR4();
+        IGenericClient client = ctx.newRestfulGenericClient(serverBase); // Build the FHIR client.
+
+        Bundle results = client
+                .search()
+                .forResource(Patient.class)
+                .where(Patient.FAMILY.matches().value("duck"))
+                .returnBundle(Bundle.class)
+                .execute();
+        System.out.println(bundleHandler.getListOfDeceasedPatients(results));
     }
 
 }

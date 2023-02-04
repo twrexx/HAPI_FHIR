@@ -129,7 +129,7 @@ public class ResourceHandlerTest extends TestCase {
         Coding det = new Coding();
         det.setSystem("urn:o111").setCode("456.4").setDisplay("AZZZZN");
         
-        // studentResourceHandler.createUSCorePatient("test", identifier, name,ombCat, det, "Asian");
-        // System.out.println(parser.encodeResourceToString(studentResourceHandler.createUSCorePatient("test", identifier, name,ombCat, det, "Asian")));
+        studentResourceHandler.createUSCorePatient("test", identifier, name,ombCat, det, "Asian");
+        System.out.println(parser.encodeResourceToString(studentResourceHandler.createUSCorePatient("test", identifier, name,ombCat, det, "Asian")));
     }
 }

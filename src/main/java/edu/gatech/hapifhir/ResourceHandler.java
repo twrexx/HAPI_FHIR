@@ -88,7 +88,7 @@ public class ResourceHandler {
         // START STUDENT CODE HERE
         usCorePatient.setId(id);
         usCorePatient.addIdentifier(identifier);
-        usCorePatient.addName().setFamily(name.getFamily()).addGiven(String.valueOf(name.getGiven()));
+        usCorePatient.addName(name);
         
         Meta meta = new Meta();
         meta.addProfile("http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient");
